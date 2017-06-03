@@ -15,11 +15,13 @@
         <ul data-bind="foreach: viewList">
           <li data-bind="text: name"></li>
         </ul>
+        <p id="p"></p>
       </div>
         <div id="map"></div>
     </div>
   </div>
   <script async defer src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAKkpGgQdS2nqqTCmAPkN3P21RjlGVzm5k&callback=initMap"></script>
+  <script src="js/lib/jquery-3.2.1.min.js"></script>
   <script src="js/lib/knockout-3.2.0.js"></script>
   <script src="js/viewList.js"></script>
   <script src="js/app.js"></script>
