@@ -1,7 +1,8 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var name, hours, location, price, category;
+var response, name, contact, address, url, category;
+var arr = [];
 var model =
 [
   {
@@ -9,23 +10,24 @@ var model =
    url: url,
    dataType: 'json',
    data: {
-     client_id: MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST,
-     client_secret: EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT,
+     client_id: "MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST",
+     client_secret: "EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT",
      v: 20170604,
      near: "boston",
      query: "restaurant",
      async: true
    },
    success: function (data) {
-    //  console.log(data);
-    //  var response = data.response.venues
-    //  for (var i = 0; i < response.length; i++) {
-    //    name = response[i].name;
-    //    category = response[i].category;
-    //    location = response[i].location;
-    //    hours = response[i].hours;
-    //    price = response[i].price;
-    //  }
+     response = data.response.venues;
+     for (var i = 0; i < response.length; i++) {
+       name = response[i].name;
+       category = response[i].categories;
+       address = response[i].location;
+       contact = response[i].contact;
+       url = response[i].url;
+       arr.push(name, category, address, contact, url)
+     }
+     return arr
    },
    error: function(e) {
      alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
@@ -37,7 +39,7 @@ var model =
 //Use Foursquare data to populate the list
 function ViewModel() {
 var self = this;
-// console.log(model);
+
 
 }
 
