@@ -1,6 +1,6 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
-var url = 'https://api.foursquare.com/v2/venues/search';
+var url = 'https://api.foursquare.com/v2/venues/search'
 var name, hours, location, price, category;
 var model =
 [
@@ -9,15 +9,15 @@ var model =
    url: url,
    dataType: 'json',
    data: {
-     client_id: "MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST",
-     client_secret: "EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT",
+     client_id: MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST,
+     client_secret: EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT,
      v: 20170604,
      near: "boston",
-     query: "restaurants",
+     query: "restaurant",
      async: true
    },
    success: function (data) {
-     console.log(data);
+    //  console.log(data);
     //  var response = data.response.venues
     //  for (var i = 0; i < response.length; i++) {
     //    name = response[i].name;
