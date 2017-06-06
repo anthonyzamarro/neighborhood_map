@@ -1,8 +1,69 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, obj, name, contact, address, url, type, lat, lng;
-// var restaurantModel = [];
+var response, name, contact, address, url, type, lat, lng;
+
+var Restaurant = function (data) {
+  var self = this;
+  this.name = data.name;
+  this.type = data.categories[0].name;
+  this.address = data.location.address + ' ' + data.location.city + ','  + data.location.state + ' ' +  data.location.postalCode;
+  this.contact = data.contact.formattedPhone;
+  this.url = data.url;
+
+  this.position = {lat: data.location.lat, lng: data.location.lng};
+}
+
+//Extract API data and cache wanted values
+// function model(_data) {
+//   // console.log(_data);
+//   for (var i = 0; i < _data.length; i++) {
+//     name = _data[i].name;
+//     type = _data[i].categories[0].name;
+//     address = _data[i].location.address + ' ' + _data[i].location.city + ','  + _data[i].location.state + ' ' +  _data[i].location.postalCode;
+//     lat = _data[i].location.lat;
+//     lng = _data[i].location.lng;
+//     contact = _data[i].contact.formattedPhone;
+//     url = _data[i].url;
+//
+//     //store values into model
+//     restaurantModel = {
+//         name: name,
+//         type: type,
+//         address: address,
+//         lat: lat,
+//         lng: lng,
+//         contact: contact,
+//         url: url
+//       }
+//       ViewModel(restaurantModel);
+//       //Why doesn't all data log? At least 8 objects are missing at any time.
+//   }
+// }
+
+//Use Foursquare data to populate the list
+function ViewModel() {
+  var self = this;
+
+  this.restaurant = ko.observableArray([]);
+
+  }
+
+//Create map and use Foursquare data to get locations and restaurant details
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: 42.355709, lng: -71.057205},
+  zoom: 13,
+  mapTypeControl: false
+});
+
+var infowindow;
+
+var vm = new ViewModel();
+
+ko.applyBindings(vm);
+
 $.ajax({
  url: url,
  dataType: 'json',
@@ -16,94 +77,32 @@ $.ajax({
  },
  success: function (data) {
    response = data.response.venues;
-    model(response)
+   for (var i = 0; i < response.length; i++) {
+     vm.restaurant.push(new Restaurant(response[i]));
+
+     makeMarkers(new Restaurant(response[i]))
+   }
  },
  error: function(e) {
    alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
  }
 });
 
-//Extract API data and cache wanted values
-function model(_data) {
-  for (var i = 0; i < _data.length; i++) {
-    name = _data[i].name;
-    type = _data[i].categories[0].name;
-    address = _data[i].location.address + ' ' + _data[i].location.city + ','  + _data[i].location.state + ' ' +  _data[i].location.postalCode;
-    lat = _data[i].location.lat;
-    lng = _data[i].location.lng;
-    contact = _data[i].contact.formattedPhone;
-    url = _data[i].url;
 
-    //store values into model
-    restaurantModel = {
-        name: name,
-        type: type,
-        address: address,
-        lat: lat,
-        lng: lng,
-        contact: contact,
-        url: url
-      }
-      // restaurantModel.push(obj)
-      ViewModel(restaurantModel)
-  }
+//Create markers for each location
+function makeMarkers(marker) {
+  // console.log(marker.position);
+  var marker = new google.maps.Marker({
+    position: marker.position,
+    name: marker.name,
+    map: map,
+    animation: google.maps.Animation.DROP,
+  });
 
-}
-
-// function getRestaurantModel (restaurantModelData) {
-//   restaurantModelData.forEach(function(e) {
-//     // console.log(e);
-//   })
-// }
-
-
-//Use Foursquare data to populate the list
-function ViewModel(restaurantModelData) {
-var self = this;
-
-this.list = ko.observableArray([]);
-
-this.list().push(restaurantModelData)
-
-this.list().forEach(function(item) {
-  // console.log(item);
-});
-
-
-}
-
-//Create map and use Foursquare data to get locations and restaurant details
-var map;
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-  center: {lat: 42.355709, lng: -71.057205},
-  zoom: 13,
-  mapTypeControl: false
-});
-
-var locations = [
-  {title: 'Five Guys', location: {lat: 42.377003, lng:-71.116660}},
-  {title: 'Roxy\'s', location: {lat: 42.360091, lng:-71.094160}},
-  {title: 'Amelia\'s Tanqueria', location: {lat: 42.339807, lng:-71.089172}},
-  {title: 'Supper 88', location: {lat: 42.350500, lng:-71.105399}},
-  {title: 'Eagle\s Deli', location: {lat: 42.335549, lng:-71.168495}},
-  {title: 'Highspot Deli', location: {lat: 42.358520, lng:-71.061356}},
-  {title: 'New York Pizza', location: {lat: 42.352030, lng:-71.065655}}
-]
-  //Create markers for each location
-  for (var i = 0; i < locations.length; i++) {
-    var position = locations[i].location;
-    var title = locations[i].title;
-
-    var marker = new google.maps.Marker({
-      position: position,
-      title: title,
-      map: map,
-      animation: google.maps.Animation.DROP,
-      id: i
-    });
-  }
+  marker.addListener('click', function(){
+      console.log(marker.name);
+  });
 }
 
 
-ko.applyBindings(new ViewModel());
+}
