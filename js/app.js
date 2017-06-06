@@ -1,7 +1,7 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, name, contact, address, url, category;
+var response, name, contact, address, url, type, lat, lng;
 var restaurantModel;
 $.ajax({
  url: url,
@@ -16,49 +16,59 @@ $.ajax({
  },
  success: function (data) {
    response = data.response.venues;
-  //  console.log(response);
-   for (var i = 0; i < response.length; i++) {
-     name = response[i].name;
-     category = response[i].categories;
-     address = response[i].location;
-     contact = response[i].contact;
-     url = response[i].url;
-   }
-
-   restaurantModel = [
-    {
-      name: name,
-      category: category,
-      address: address,
-      contact: contact,
-      url: url
-    }
-  ]
-
+    model(response)
  },
  error: function(e) {
    alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
  }
 });
 
-var Restaurant = function (data) {
-  var self = this;
+//Extract API data and cache wanted values
+function model(_data) {
+  for (var i = 0; i < _data.length; i++) {
+    name = _data[i].name;
+    type = _data[i].categories[0].name;
+    address = _data[i].location.address + ' ' + _data[i].location.city + ','  + _data[i].location.state + ' ' +  _data[i].location.postalCode;
+    lat = _data[i].location.lat;
+    lng = _data[i].location.lng;
+    contact = _data[i].contact.formattedPhone;
+    url = _data[i].url;
 
-  this.name = ko.observable(data.name);
-  this.category = ko.observable(data.category);
-  this.address = ko.observable(data.address);
-  this.contact = ko.observable(data.contact);
-  this.url = ko.observable(data.url);
+    //store values into model
+    restaurantModel = [
+      {
+        name: name,
+        type: type,
+        address: address,
+        lat: lat,
+        lng: lng,
+        contact: contact,
+        url: url
+      }
+    ]
+    getRestaurantModel(restaurantModel)
+  }
 }
+
+function getRestaurantModel (restaurantModelData) {
+  console.log(restaurantModelData);
+
+}
+
+
+
+
 
 //Use Foursquare data to populate the list
 function ViewModel() {
 var self = this;
+// console.log(restaurantModel);
+
+
+
+
 
 }
-
-ko.applyBindings(new ViewModel());
-
 
 //Create map and use Foursquare data to get locations and restaurant details
 var map;
@@ -68,6 +78,7 @@ function initMap() {
   zoom: 13,
   mapTypeControl: false
 });
+
 var locations = [
   {title: 'Five Guys', location: {lat: 42.377003, lng:-71.116660}},
   {title: 'Roxy\'s', location: {lat: 42.360091, lng:-71.094160}},
@@ -91,3 +102,6 @@ var locations = [
     });
   }
 }
+
+
+ko.applyBindings(new ViewModel());
