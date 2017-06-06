@@ -12,9 +12,9 @@
       <div class="sideView">
         <h2>Restaurants in Boston</h2>
         <p>Search: <input id="searchBox" type="text" ></p>
-        <!-- <ul data-bind="foreach: ">
-          <li data-bind="text: $data"></li>
-        </ul> -->
+        <ul data-bind="foreach: list">
+          <li data-bind="text: name"></li>
+        </ul>
       </div>
         <div id="map"></div>
     </div>

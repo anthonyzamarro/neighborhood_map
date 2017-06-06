@@ -1,8 +1,8 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, name, contact, address, url, type, lat, lng;
-var restaurantModel;
+var response, obj, name, contact, address, url, type, lat, lng;
+// var restaurantModel = [];
 $.ajax({
  url: url,
  dataType: 'json',
@@ -35,8 +35,7 @@ function model(_data) {
     url = _data[i].url;
 
     //store values into model
-    restaurantModel = [
-      {
+    restaurantModel = {
         name: name,
         type: type,
         address: address,
@@ -45,27 +44,30 @@ function model(_data) {
         contact: contact,
         url: url
       }
-    ]
-    getRestaurantModel(restaurantModel)
+      // restaurantModel.push(obj)
+      ViewModel(restaurantModel)
   }
-}
-
-function getRestaurantModel (restaurantModelData) {
-  console.log(restaurantModelData);
 
 }
 
-
-
+// function getRestaurantModel (restaurantModelData) {
+//   restaurantModelData.forEach(function(e) {
+//     // console.log(e);
+//   })
+// }
 
 
 //Use Foursquare data to populate the list
-function ViewModel() {
+function ViewModel(restaurantModelData) {
 var self = this;
-// console.log(restaurantModel);
 
+this.list = ko.observableArray([]);
 
+this.list().push(restaurantModelData)
 
+this.list().forEach(function(item) {
+  // console.log(item);
+});
 
 
 }
