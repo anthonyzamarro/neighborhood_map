@@ -1,7 +1,7 @@
 //Use Foursquare API to get restaurant data to populate model
 // var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, name, contact, address, url, type, lat, lng;
+var response, name, contact, address, url, type, lat, lng, vm, map, marker;
 
 //Constructor function to create Restaurant info
 var Restaurant = function (data) {
@@ -15,21 +15,8 @@ var Restaurant = function (data) {
   this.position = {lat: data.location.lat, lng: data.location.lng};
 }
 
-//Use Foursquare data to populate the list
-function ViewModel() {
-  var self = this;
-
-  this.restaurant = ko.observableArray([]);
-
-  this.restaurantClick = function (test) {
-
-    };
-
-
-  }
-
 //Create map and use Foursquare data to get locations and restaurant details
-var map;
+ map;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
   center: {lat: 42.355709, lng: -71.057205},
@@ -37,9 +24,10 @@ function initMap() {
   mapTypeControl: false
 });
 
-var vm = new ViewModel();
+ vm = new ViewModel();
 
 ko.applyBindings(vm);
+
 
 $.ajax({
  url: url,
@@ -59,10 +47,10 @@ $.ajax({
      vm.restaurant.push(new Restaurant(response[i]));
 
      makeMarkers(new Restaurant(response[i]))
-
+     ViewModel(new Restaurant(response[i]))
    }
  },
- error: function(e) {
+ error: function() {
    alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
  }
 });
@@ -71,21 +59,38 @@ $.ajax({
     var infowindow = new google.maps.InfoWindow();
 
     //Create markers and infowindows for each location
-    function makeMarkers(marker) {
-      var marker = new google.maps.Marker({
-        position: marker.position,
-        name: marker.name,
+    function makeMarkers(markerData) {
+      marker = new google.maps.Marker({
+        position: markerData.position,
+        name: markerData.name,
         map: map,
         animation: google.maps.Animation.DROP
       });
-      marker.addListener('click', function(){
+
+       marker.addListener('click', function(){
         populateInfoWindow(this, infowindow);
       });
 
       bounds.extend(marker.position);
   }
+
     function populateInfoWindow(marker, infowindow) {
         infowindow.setContent('<h3>' + marker.name + '</h3>' + '<br />');
         infowindow.open(map, marker);
     };
+
+//Use Foursquare data to populate the list
+function ViewModel(test) {
+  var self = this;
+
+  this.restaurant = ko.observableArray([]);
+
+
+  this.restaurantClick = function (infowindowData) {
+
+    // console.log(infowindow);
+    // console.log(populateInfoWindow(infowindowData, infowindow));
+    }
+  }
+
 }
