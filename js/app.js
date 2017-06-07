@@ -3,6 +3,7 @@
 var url = 'https://api.foursquare.com/v2/venues/search'
 var response, name, contact, address, url, type, lat, lng;
 
+//Constructor function to create Restaurant info
 var Restaurant = function (data) {
   var self = this;
   this.name = data.name;
@@ -14,38 +15,16 @@ var Restaurant = function (data) {
   this.position = {lat: data.location.lat, lng: data.location.lng};
 }
 
-//Extract API data and cache wanted values
-// function model(_data) {
-//   // console.log(_data);
-//   for (var i = 0; i < _data.length; i++) {
-//     name = _data[i].name;
-//     type = _data[i].categories[0].name;
-//     address = _data[i].location.address + ' ' + _data[i].location.city + ','  + _data[i].location.state + ' ' +  _data[i].location.postalCode;
-//     lat = _data[i].location.lat;
-//     lng = _data[i].location.lng;
-//     contact = _data[i].contact.formattedPhone;
-//     url = _data[i].url;
-//
-//     //store values into model
-//     restaurantModel = {
-//         name: name,
-//         type: type,
-//         address: address,
-//         lat: lat,
-//         lng: lng,
-//         contact: contact,
-//         url: url
-//       }
-//       ViewModel(restaurantModel);
-//       //Why doesn't all data log? At least 8 objects are missing at any time.
-//   }
-// }
-
 //Use Foursquare data to populate the list
 function ViewModel() {
   var self = this;
 
   this.restaurant = ko.observableArray([]);
+
+  this.restaurantClick = function (test) {
+
+    };
+
 
   }
 
@@ -80,6 +59,7 @@ $.ajax({
      vm.restaurant.push(new Restaurant(response[i]));
 
      makeMarkers(new Restaurant(response[i]))
+
    }
  },
  error: function(e) {
@@ -87,32 +67,25 @@ $.ajax({
  }
 });
 
-var bounds = new google.maps.LatLngBounds();
-var infowindow = new google.maps.InfoWindow();
+    var bounds = new google.maps.LatLngBounds();
+    var infowindow = new google.maps.InfoWindow();
 
-//Create markers and infowindows for each location
-function makeMarkers(marker) {
-  // console.log(marker.position);
-  var marker = new google.maps.Marker({
-    position: marker.position,
-    name: marker.name,
-    map: map,
-    animation: google.maps.Animation.DROP,
-  });
+    //Create markers and infowindows for each location
+    function makeMarkers(marker) {
+      var marker = new google.maps.Marker({
+        position: marker.position,
+        name: marker.name,
+        map: map,
+        animation: google.maps.Animation.DROP
+      });
+      marker.addListener('click', function(){
+        populateInfoWindow(this, infowindow);
+      });
 
-
-  bounds.extend(marker.position)
-
-  marker.addListener('click', function(){
-    populateInfoWindow(this, infowindow)
-
-  });
+      bounds.extend(marker.position);
+  }
     function populateInfoWindow(marker, infowindow) {
-        infowindow.setContent('<h3>' + marker.name + '</h3>');
+        infowindow.setContent('<h3>' + marker.name + '</h3>' + '<br />');
         infowindow.open(map, marker);
     };
-
-
-}
-
 }
