@@ -46,8 +46,8 @@ $.ajax({
    for (var i = 0; i < response.length; i++) {
      vm.restaurant.push(new Restaurant(response[i]));
 
-     makeMarkers(new Restaurant(response[i]))
-     ViewModel(new Restaurant(response[i]))
+     makeMarkers(new Restaurant(response[i]));
+     ViewModel(new Restaurant(response[i]));
    }
  },
  error: function() {
@@ -79,18 +79,19 @@ $.ajax({
         infowindow.open(map, marker);
     };
 
-//Use Foursquare data to populate the list
-function ViewModel(test) {
-  var self = this;
+  //Use Foursquare data to populate the list
+  function ViewModel(restaurantData) {
+      var self = this;
 
-  this.restaurant = ko.observableArray([]);
+      this.restaurant = ko.observableArray([]);
 
-
-  this.restaurantClick = function (infowindowData) {
-
-    // console.log(infowindow);
-    // console.log(populateInfoWindow(infowindowData, infowindow));
+      // restaurantData.marker = marker;
+      this.restaurantClick = function (infowindowData) {
+        makeMarkers(infowindowData);
+        console.log(marker);
+        infowindow.setContent(infowindowData.name);
+        infowindow.open(map, marker);
+        }
     }
-  }
 
 }
