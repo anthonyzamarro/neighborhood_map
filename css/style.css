@@ -16,3 +16,16 @@ body {
   width: 100%;
   position: absolute;
 }
+
+#search-box {
+  background: lightgray;
+}
+
+li {
+  list-style: none;
+}
+
+#list-item:hover {
+  background: lightblue;
+  cursor: pointer;
+}

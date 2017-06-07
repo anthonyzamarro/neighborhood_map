@@ -58,8 +58,6 @@ function initMap() {
   mapTypeControl: false
 });
 
-var infowindow;
-
 var vm = new ViewModel();
 
 ko.applyBindings(vm);
@@ -73,7 +71,8 @@ $.ajax({
    v: 20170604,
    near: "boston",
    query: "restaurant",
-   async: true
+   async: true,
+   limit: 15
  },
  success: function (data) {
    response = data.response.venues;
@@ -88,8 +87,10 @@ $.ajax({
  }
 });
 
+var bounds = new google.maps.LatLngBounds();
+var infowindow = new google.maps.InfoWindow();
 
-//Create markers for each location
+//Create markers and infowindows for each location
 function makeMarkers(marker) {
   // console.log(marker.position);
   var marker = new google.maps.Marker({
@@ -99,10 +100,19 @@ function makeMarkers(marker) {
     animation: google.maps.Animation.DROP,
   });
 
-  marker.addListener('click', function(){
-      console.log(marker.name);
-  });
-}
 
+  bounds.extend(marker.position)
+
+  marker.addListener('click', function(){
+    populateInfoWindow(this, infowindow)
+
+  });
+    function populateInfoWindow(marker, infowindow) {
+        infowindow.setContent('<h3>' + marker.name + '</h3>');
+        infowindow.open(map, marker);
+    };
+
+
+}
 
 }

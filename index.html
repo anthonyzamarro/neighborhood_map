@@ -10,10 +10,10 @@
   <body>
     <div class="container">
       <div class="sideView">
-        <h2>Restaurants in Boston</h2>
-        <p>Search: <input id="searchBox" type="text" ></p>
+        <h2 id="title">Restaurants in Boston</h2>
+        <p id="search-area">Search: <input id="search-box" type="text" ></p>
         <ul data-bind="foreach: restaurant">
-          <li data-bind="text: name"></li>
+          <li id="list-item"data-bind="text: name"></li>
         </ul>
       </div>
         <div id="map"></div>
