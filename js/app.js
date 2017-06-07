@@ -85,11 +85,10 @@ $.ajax({
 
       this.restaurant = ko.observableArray([]);
 
-      // restaurantData.marker = marker;
       this.restaurantClick = function (infowindowData) {
         makeMarkers(infowindowData);
-        console.log(marker);
-        infowindow.setContent(infowindowData.name);
+        marker.setAnimation(google.maps.Animation.NULL);
+        infowindow.setContent('<h3>' + marker.name + '</h3>' + '<br />');
         infowindow.open(map, marker);
         }
     }
