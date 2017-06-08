@@ -100,9 +100,10 @@ $.ajax({
         infowindow.open(map, marker);
       };
 
+      //This logs the names, but first logs undefined. Why is that?
+      console.log(this.markerName);
       this.filter = ko.computed(function() {
         self.searchList()
-        
       });
 
 
