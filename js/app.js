@@ -26,8 +26,7 @@ vm = new ViewModel();
 
 ko.applyBindings(vm);
 
-
-function getData(restaurants) {
+function getData(restaurants){
   $.ajax({
    url: url,
    dataType: 'json',
@@ -42,10 +41,10 @@ function getData(restaurants) {
    success: function (data) {
      response = data.response.venues;
      for (var i = 0; i < response.length; i++) {
-       vm.restaurant.push(new Restaurant(response[i]));
-
-       makeMarkers(new Restaurant(response[i]));
-       ViewModel(new Restaurant(response[i]));
+       vm.restaurants.push(new Restaurant(response[i]));
+      //  console.log(restaurants());
+      //  makeMarkers(new Restaurant(response[i]));
+      //  ViewModel(new Restaurant(response[i]));
      }
    },
    error: function() {
@@ -90,12 +89,13 @@ function getData(restaurants) {
       this.markerName = listName;
       this.marker = marker;
       this.visible = visible;
-      this.restaurant = ko.observableArray([]);
+      this.restaurants = ko.observableArray([]);
       this.searchList = document.getElementById('search-box');
-      this.searchList = ko.observable()
+      this.searchList = ko.observable();
 
-      //This causes an infinite loop
-      // getData(self.searchList())
+      getData(this.restaurants);
+
+      console.log(this.restaurants());
 
       //Show infowindow when user clicks restaurant in list view
       this.restaurantClick = function (infowindowData) {
@@ -108,11 +108,9 @@ function getData(restaurants) {
       };
 
       //This logs the names, but first logs undefined. Why is that?
-      // console.log(this.marker);
       this.filter = ko.computed(function() {
-        // self.searchList()
+        self.searchList();
         if(self.searchList() == '') {
-          console.log(self.searchList());
         }
       });
 

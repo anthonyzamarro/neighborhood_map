@@ -16,7 +16,7 @@
           <input id="search-box" type="text" data-bind="textInput: searchList, event: filter">
           <input id="search-btn" type="button" data-bind="click: searchBtn" value="Go!">
         </div>
-        <ul data-bind="foreach: restaurant">
+        <ul data-bind="foreach: restaurants">
           <li id="list-item" data-bind="text: name, click: $parent.restaurantClick"></li>
         </ul>
       </div>
