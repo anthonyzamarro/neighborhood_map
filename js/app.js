@@ -1,7 +1,6 @@
 //Use Foursquare API to get restaurant data to populate model
-// var url = 'https://api.foursquare.com/v2/venues/search?client_id=MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST%20&client_secret=EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT%20&near=boston&query=restaurants%20&v=20200131%20&m=foursquare';
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, name, contact, address, url, type, lat, lng, vm, map, marker, visible, listName;
+var response, name, contact, address, url, type, lat, lng, vm, map, marker, visible, listName, test;
 
 //Constructor function to create Restaurant info
 var Restaurant = function (data) {
@@ -26,10 +25,11 @@ vm = new ViewModel();
 
 ko.applyBindings(vm);
 
-function getData(restaurants){
+// function getData(restaurants){
   $.ajax({
    url: url,
    dataType: 'json',
+   timeout: 1000,
    data: {
      client_id: "MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST",
      client_secret: "EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT",
@@ -42,16 +42,15 @@ function getData(restaurants){
      response = data.response.venues;
      for (var i = 0; i < response.length; i++) {
        vm.restaurants.push(new Restaurant(response[i]));
-      //  console.log(restaurants());
-      //  makeMarkers(new Restaurant(response[i]));
-      //  ViewModel(new Restaurant(response[i]));
+       makeMarkers(new Restaurant(response[i]));
+       ViewModel(new Restaurant(response[i]));
      }
    },
    error: function() {
      alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
    }
   });
-}
+// }
 
     var bounds = new google.maps.LatLngBounds();
     var infowindow = new google.maps.InfoWindow();
@@ -64,8 +63,10 @@ function getData(restaurants){
         map: map,
         animation: google.maps.Animation.DROP
       });
+      //Set up items to be filtered for later
        listName = marker.name;
        visible = marker.visible;
+      //  test = listName.indexOf()
 
        marker.addListener('click', function(){
         populateInfoWindow(markerData, infowindow);
@@ -86,16 +87,12 @@ function getData(restaurants){
   //Use Foursquare data to populate the list
   function ViewModel(restaurantData) {
       var self = this;
-      this.markerName = listName;
       this.marker = marker;
       this.visible = visible;
       this.restaurants = ko.observableArray([]);
       this.searchList = document.getElementById('search-box');
       this.searchList = ko.observable();
-
-      getData(this.restaurants);
-
-      console.log(this.restaurants());
+      this.testArr = ko.observableArray([]);
 
       //Show infowindow when user clicks restaurant in list view
       this.restaurantClick = function (infowindowData) {
@@ -107,14 +104,16 @@ function getData(restaurants){
         infowindow.open(map, marker);
       };
 
-      //This logs the names, but first logs undefined. Why is that?
+
+      self.testArr().push(listName)
+
       this.filter = ko.computed(function() {
-        self.searchList();
-        if(self.searchList() == '') {
+        if(self.searchList() == self.testArr()) {
+          console.log(true);
+        } else {
+          console.log(self.testArr());
         }
       });
-
-
       this.searchBtn = function () {
 
       }
