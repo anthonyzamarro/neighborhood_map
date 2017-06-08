@@ -11,7 +11,11 @@
     <div class="container">
       <div class="sideView">
         <h2 id="title">Restaurants in Boston</h2>
-        <p id="search-area">Search: <input id="search-box" type="text" ></p>
+        <div id="search-area">Search:
+          <!-- <input id="search-box" type="text" value="FOOD" data-bind="textInput: filter"> -->
+          <input id="search-box" type="text" data-bind="textInput: searchList, event: filter">
+          <input id="search-btn" type="button" data-bind="click: searchBtn" value="Go!">
+        </div>
         <ul data-bind="foreach: restaurant">
           <li id="list-item" data-bind="text: name, click: $parent.restaurantClick"></li>
         </ul>
