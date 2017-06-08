@@ -27,32 +27,32 @@ vm = new ViewModel();
 ko.applyBindings(vm);
 
 
+function getData(restaurants) {
+  $.ajax({
+   url: url,
+   dataType: 'json',
+   data: {
+     client_id: "MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST",
+     client_secret: "EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT",
+     v: 20170604,
+     near: "boston",
+     query: "restaurant",
+     async: true
+   },
+   success: function (data) {
+     response = data.response.venues;
+     for (var i = 0; i < response.length; i++) {
+       vm.restaurant.push(new Restaurant(response[i]));
 
-$.ajax({
- url: url,
- dataType: 'json',
- data: {
-   client_id: "MU5LQAECHVZLCEYZGSXIZ3BWLAQ5HZP3BRRHCRL1YJ1WJTST",
-   client_secret: "EDFVN04UNKLC0FRNS20ORZPZJRTVIF4XAHDCMVCI2HGC1NTT",
-   v: 20170604,
-   near: "boston",
-   query: "restaurant",
-   async: true,
-  //  limit: 15
- },
- success: function (data) {
-   response = data.response.venues;
-   for (var i = 0; i < response.length; i++) {
-     vm.restaurant.push(new Restaurant(response[i]));
-
-     makeMarkers(new Restaurant(response[i]));
-     ViewModel(new Restaurant(response[i]));
+       makeMarkers(new Restaurant(response[i]));
+       ViewModel(new Restaurant(response[i]));
+     }
+   },
+   error: function() {
+     alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
    }
- },
- error: function() {
-   alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
- }
-});
+  });
+}
 
     var bounds = new google.maps.LatLngBounds();
     var infowindow = new google.maps.InfoWindow();
@@ -66,6 +66,7 @@ $.ajax({
         animation: google.maps.Animation.DROP
       });
        listName = marker.name;
+       visible = marker.visible;
 
        marker.addListener('click', function(){
         populateInfoWindow(markerData, infowindow);
@@ -82,13 +83,19 @@ $.ajax({
                               '<div><a target="_blank" href="' + markerData.url + '">' + 'Visit their website' + '</div>');
         infowindow.open(map, marker);
       };
+
   //Use Foursquare data to populate the list
   function ViewModel(restaurantData) {
       var self = this;
       this.markerName = listName;
+      this.marker = marker;
+      this.visible = visible;
       this.restaurant = ko.observableArray([]);
       this.searchList = document.getElementById('search-box');
       this.searchList = ko.observable()
+
+      //This causes an infinite loop
+      // getData(self.searchList())
 
       //Show infowindow when user clicks restaurant in list view
       this.restaurantClick = function (infowindowData) {
@@ -101,9 +108,12 @@ $.ajax({
       };
 
       //This logs the names, but first logs undefined. Why is that?
-      console.log(this.markerName);
+      // console.log(this.marker);
       this.filter = ko.computed(function() {
-        self.searchList()
+        // self.searchList()
+        if(self.searchList() == '') {
+          console.log(self.searchList());
+        }
       });
 
 
