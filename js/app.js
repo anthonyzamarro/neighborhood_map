@@ -66,10 +66,21 @@ function getData(restaurants) {
            });
            //Populate info windows with api data
             function populateInfoWindow(marker, infowindow) {
-              marker.setAnimation(google.maps.Animation.NULL);
-                infowindow.setContent('<h3>' + this.name + '</h3>' + '<br />' +
-                                      '<div>' + this.address + '</div>' +
-                                      '<div><a target="_blank" href="' + this.url + '">' + 'Visit their website' + '</div>');
+              var streetViewService = new google.maps.StreetViewService();
+              var radius = 50;
+
+              function getStreetView (data, status) {
+                if (status == google.maps.StreetViewStatus.OK) {
+                  var nearStreetViewLocation = data.location.latlng;
+                  var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+                    marker.setAnimation(google.maps.Animation.NULL);
+                    infowindow.setContent('<h3>' + this.name + '</h3>' + '<br />' +
+                                          '<div>' + this.address + '</div>' +
+                                          '<div><a target="_blank" href="' + this.url + '">' + 'Visit their website' + '</div>');
+                }
+
+              }
+
                 infowindow.open(map, marker);
               };
            bounds.extend(marker.position);
@@ -100,22 +111,15 @@ function getData(restaurants) {
 
         self.filteredList = ko.computed(function() {
           self.searchRestaurants()
-          setTimeout(function(){
             var filter = self.searchRestaurants().toLowerCase();
             if(!filter) {
-              return filter;
+              return self.restaurants();
             } else {
                 return ko.utils.arrayFilter(self.restaurants(), function(restaurant) {
                 var filtered = restaurant.name.toLowerCase().indexOf(filter) > -1;
-                if(!filtered) {
-                  console.log(filtered);
-                } else {
-                  
-                }
-
+                return filtered
               });
             }
-          }, 500);
         }, self.filteredList);
 
         this.searchBtn = function () {
