@@ -10,14 +10,13 @@
   <body>
     <div class="container">
       <div class="sideView">
-        <h2 id="title">Restaurants in Boston</h2>
-        <div id="search-area">Search:
-          <!-- <input id="search-box" type="text" value="FOOD" data-bind="textInput: filter"> -->
-          <input id="search-box" type="text" data-bind="textInput: searchList, event: filter">
+        <h2 id="title" data-bind="text: title"></h2>
+        <div id="search-area"> Search:
+          <input id="search-box" type="text" data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
           <input id="search-btn" type="button" data-bind="click: searchBtn" value="Go!">
         </div>
-        <ul data-bind="foreach: restaurants">
-          <li id="list-item" data-bind="text: name, click: $parent.restaurantClick"></li>
+        <ul data-bind="foreach: restaurants, filteredList">
+          <li id="list-item" data-bind="text: $data.name, click: $parent.restaurantClick"></li>
         </ul>
       </div>
         <div id="map"></div>
