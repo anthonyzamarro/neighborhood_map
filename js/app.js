@@ -45,7 +45,6 @@ function getData(restaurants) {
        for (var i = 0; i < response.length; i++) {
          restaurants.push(new Restaurant(response[i]));
        }
-
        //Create markers and infowindows for the marker
        restaurants().forEach(function(restaurantData){
          this.position = restaurantData.position;
@@ -59,28 +58,31 @@ function getData(restaurants) {
              name: this.name,
              map: map,
              animation: google.maps.Animation.DROP,
+             address: this.address,
+             contact: this.contact,
+             url: this.url
            });
              //Attach markers to restaurant objects
-             restaurantData.marker = marker
+            restaurantData.marker = marker
              //Click on marker to open infowindow
              marker.addListener('click', function(){
              populateInfoWindow(this, infowindow);
            });
-           //Populate info windows with api data
-          populateInfoWindow =  function (marker, infowindow) {
-              if(infowindow.marker != marker) {
+              //Populate info windows with api data
+              populateInfoWindow =  function (mapMarker, infowindow) {
+              if(infowindow.marker != mapMarker) {
                 infowindow.setContent('');
-                infowindow.marker = marker;
+                infowindow.marker = mapMarker;
                 infowindow.addListener('closeclick', function() {
                   infowindow.marker = null;
                 });
-                //Get image of restaurant
-                var radius = 50;
-                var windowContent = '<h2 id="windowName">' + restaurantData.name + '</h2>' + '<div id="pano"></div>' +
-                                    '<div class="windowStyles">' + restaurantData.address + '</div>' +
-                                    '<div class="windowStyles">' + restaurantData.contact + '</div>' +
-                                    '<div class="windowStyles"><a target="_blank" href="' + restaurantData.url + '">' +
-                                    'Visit their website' + '</div>';
+              //Get image of restaurant
+              var windowContent = '<h2 id="windowName">' + mapMarker.name + '</h2>' + '<div id="pano"></div>' +
+                                 '<div class="windowStyles">' + mapMarker.address + '</div>' +
+                                 '<div class="windowStyles">' + mapMarker.contact + '</div>' +
+                                 '<div class="windowStyles"><a target="_blank" href="' + mapMarker.url + '">' +
+                                 'Visit their website' + '</div>';
+              var radius = 50;
                function getStreetView(data, status) {
                 if(status == google.maps.StreetViewStatus.OK) {
                 var nearStreetViewLocation = data.location.latLng;
@@ -101,9 +103,9 @@ function getData(restaurants) {
                           '<div>No Street View Found</div>');
                         }
                       }
-                      streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+                      streetViewService.getPanoramaByLocation(mapMarker.position, radius, getStreetView);
                       //Open the infowindow on the correct marker
-                      infowindow.open(map, marker);
+                      infowindow.open(map, mapMarker);
               }
             };
             restaurantData.infowindow = populateInfoWindow
@@ -114,6 +116,7 @@ function getData(restaurants) {
        alert('Sorry! Data unavailable at this time. Please refresh the page and try again.');
      }
     });
+
   }
   //Use Foursquare data to populate the list
   function ViewModel() {
@@ -126,11 +129,11 @@ function getData(restaurants) {
 
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function (infowindowData) {
-          var windowContent = '<h2 id="windowName">' + infowindowData.name + '</h2>' + '<div id="pano"> </div>' +
-                              '<div class="windowStyles">' + infowindowData.address + '</div>' +
-                              '<div class="windowStyles">' + infowindowData.contact + '</div>' +
-                              '<div class="windowStyles"><a target="_blank" href="' + infowindowData.url + '">' +
-                              'Visit their website' + '</div>'
+          var windowContent = '<h2 id="windowName">' + infowindowData.marker.name + '</h2>' + '<div id="pano"> </div>' +
+                              '<div class="windowStyles">' + infowindowData.marker.address + '</div>' +
+                              '<div class="windowStyles">' + infowindowData.marker.contact + '</div>' +
+                              '<div class="windowStyles"><a target="_blank" href="' + infowindowData.marker.url + '">' +
+                              'Visit their website' + '</div>';
           infowindow.setContent(windowContent);
           infowindow.open(map, marker);
          };
