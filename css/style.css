@@ -29,3 +29,27 @@ li {
   background: lightblue;
   cursor: pointer;
 }
+
+#pano {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+#windowName{
+  margin: 0 auto;
+}
+
+.windowStyles {
+  font-size: 16px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.windowStyles a:hover {
+  color: blue;
+}

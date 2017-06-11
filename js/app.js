@@ -1,19 +1,17 @@
 //Use Foursquare API to get restaurant data to populate model
 var url = 'https://api.foursquare.com/v2/venues/search'
-var response, name, contact, address, url, type, lat, lng, vm, map, marker, visible, listName;
-//Constructor function to create Restaurant info
+var response, vm, map, marker;
+//Constructor function to format Restaurant info
 var Restaurant = function (data) {
   var self = this;
   this.name = data.name;
   this.type = data.categories.length > 0 ? data.categories[0].name : "";
-  this.address = data.location.address + ' ' + data.location.city + ','  + data.location.state + ' ' +  data.location.postalCode;
+  this.address = data.location.address + ' ' + data.location.city + ', '  + data.location.state + ' ' +  data.location.postalCode;
   this.contact = data.contact.formattedPhone;
   this.url = data.url;
 
   this.position = {lat: data.location.lat, lng: data.location.lng};
 }
-
-
 
 //Create map and use Foursquare data to get locations and restaurant details
 function initMap() {
@@ -28,6 +26,7 @@ ko.applyBindings(vm);
 
 var bounds = new google.maps.LatLngBounds();
 var infowindow = new google.maps.InfoWindow();
+var streetViewService = new google.maps.StreetViewService();
 
 function getData(restaurants) {
     $.ajax({
@@ -46,11 +45,13 @@ function getData(restaurants) {
        for (var i = 0; i < response.length; i++) {
          restaurants.push(new Restaurant(response[i]));
        }
+
        //Create markers and infowindows for the marker
        restaurants().forEach(function(restaurantData){
          this.position = restaurantData.position;
          this.name  = restaurantData.name;
          this.address  = restaurantData.address;
+         this.contact  = restaurantData.contact;
          this.url  = restaurantData.url;
           //Create markers and infowindows for each location
            marker = new google.maps.Marker({
@@ -59,31 +60,54 @@ function getData(restaurants) {
              map: map,
              animation: google.maps.Animation.DROP,
            });
-           //Attach markers to restaurant objects
-           restaurantData.marker = marker
+             //Attach markers to restaurant objects
+             restaurantData.marker = marker
+             //Click on marker to open infowindow
              marker.addListener('click', function(){
              populateInfoWindow(this, infowindow);
            });
            //Populate info windows with api data
-            function populateInfoWindow(marker, infowindow) {
-              var streetViewService = new google.maps.StreetViewService();
-              var radius = 50;
-
-              function getStreetView (data, status) {
-                if (status == google.maps.StreetViewStatus.OK) {
-                  var nearStreetViewLocation = data.location.latlng;
-                  var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
-                    marker.setAnimation(google.maps.Animation.NULL);
-                    infowindow.setContent('<h3>' + this.name + '</h3>' + '<br />' +
-                                          '<div>' + this.address + '</div>' +
-                                          '<div><a target="_blank" href="' + this.url + '">' + 'Visit their website' + '</div>');
-                }
-
+          populateInfoWindow =  function (marker, infowindow) {
+              if(infowindow.marker != marker) {
+                infowindow.setContent('');
+                infowindow.marker = marker;
+                infowindow.addListener('closeclick', function() {
+                  infowindow.marker = null;
+                });
+                //Get image of restaurant
+                var radius = 50;
+                var windowContent = '<h2 id="windowName">' + restaurantData.name + '</h2>' + '<div id="pano"></div>' +
+                                    '<div class="windowStyles">' + restaurantData.address + '</div>' +
+                                    '<div class="windowStyles">' + restaurantData.contact + '</div>' +
+                                    '<div class="windowStyles"><a target="_blank" href="' + restaurantData.url + '">' +
+                                    'Visit their website' + '</div>';
+               function getStreetView(data, status) {
+                if(status == google.maps.StreetViewStatus.OK) {
+                var nearStreetViewLocation = data.location.latLng;
+                 var heading = google.maps.geometry.spherical.computeHeading(
+                  nearStreetViewLocation, marker.position);
+                  infowindow.setContent(windowContent);
+                  var panoramaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                      heading: heading,
+                      pitch: 10
+                    }
+                  };
+                  var panorama = new google.maps.StreetViewPanorama(
+                                 document.getElementById('pano'), panoramaOptions);
+                        } else {
+                          infowindow.setContent('div' + restaurantData.name + '</div>' +
+                          '<div>No Street View Found</div>');
+                        }
+                      }
+                      streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+                      //Open the infowindow on the correct marker
+                      infowindow.open(map, marker);
               }
-
-                infowindow.open(map, marker);
-              };
-           bounds.extend(marker.position);
+            };
+            restaurantData.infowindow = populateInfoWindow
+            bounds.extend(marker.position);
        });
      },
      error: function() {
@@ -99,25 +123,26 @@ function getData(restaurants) {
     this.searchRestaurants = ko.observable('');
     this.title = document.getElementById('title');
     this.title = ko.observable('Restaurants in Boston');
-    this.arr = ko.observableArray([]);
 
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function (infowindowData) {
-          infowindow.setContent('<h3>' + infowindowData.name + '</h3>' + '<br />' +
-                                '<div>' + infowindowData.address + '</div>' +
-                                '<div><a target="_blank" href="' + infowindowData.url + '">' + 'Visit their website' + '</div>');
+          var windowContent = '<h2 id="windowName">' + infowindowData.name + '</h2>' + '<div id="pano"> </div>' +
+                              '<div class="windowStyles">' + infowindowData.address + '</div>' +
+                              '<div class="windowStyles">' + infowindowData.contact + '</div>' +
+                              '<div class="windowStyles"><a target="_blank" href="' + infowindowData.url + '">' +
+                              'Visit their website' + '</div>'
+          infowindow.setContent(windowContent);
           infowindow.open(map, marker);
-        };
-
+         };
+        //Filter view list and markers
         self.filteredList = ko.computed(function() {
-          self.searchRestaurants()
             var filter = self.searchRestaurants().toLowerCase();
             if(!filter) {
               return self.restaurants();
             } else {
                 return ko.utils.arrayFilter(self.restaurants(), function(restaurant) {
                 var filtered = restaurant.name.toLowerCase().indexOf(filter) > -1;
-                return filtered
+                return filtered;
               });
             }
         }, self.filteredList);
