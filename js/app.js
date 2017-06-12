@@ -127,24 +127,25 @@ function getData(restaurants) {
     this.title = document.getElementById('title');
     this.title = ko.observable('Restaurants in Boston');
 
+
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function (infowindowData) {
-          var windowContent = '<h2 id="windowName">' + infowindowData.marker.name + '</h2>' + '<div id="pano"> </div>' +
-                              '<div class="windowStyles">' + infowindowData.marker.address + '</div>' +
-                              '<div class="windowStyles">' + infowindowData.marker.contact + '</div>' +
-                              '<div class="windowStyles"><a target="_blank" href="' + infowindowData.marker.url + '">' +
-                              'Visit their website' + '</div>';
-          infowindow.setContent(windowContent);
-          infowindow.open(map, marker);
+          new google.maps.event.trigger(infowindowData.marker, 'click');
+          bounds.extend(infowindowData.marker.position);
          };
+
         //Filter view list and markers
         self.filteredList = ko.computed(function() {
             var filter = self.searchRestaurants().toLowerCase();
             if(!filter) {
+              for (var i = 0; i < self.restaurants().length; i++) {
+                console.log(self.restaurants()[i].marker);
+              }
               return self.restaurants();
             } else {
                 return ko.utils.arrayFilter(self.restaurants(), function(restaurant) {
                 var filtered = restaurant.name.toLowerCase().indexOf(filter) > -1;
+                  restaurant.marker.setVisible(filtered);
                 return filtered;
               });
             }
