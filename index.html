@@ -8,23 +8,23 @@
     <title>Neighborhood Map</title>
   </head>
   <body>
-    <div class="container">
-      <div class="sideView">
+      <div id="map"></div>
+      <input type="button" value="MENU" id="side-view-btn">
+      <div id="side-view">
         <h2 id="title" data-bind="text: title"></h2>
-        <div id="search-area"> Search:
-          <input id="search-box" type="text" data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
-          <input id="search-btn" type="button" data-bind="click: searchBtn" value="Go!">
+        <div id="search-area">
+          <input id="search-box" type="text" value="Search..." data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
         </div>
-        <ul data-bind="foreach: filteredList">
+        <ul data-bind="foreach: filteredList" class="restaurantList">
           <li id="list-item" data-bind="text: $data.name, click: $parent.restaurantClick"></li>
         </ul>
       </div>
-        <div id="map"></div>
-    </div>
   </div>
   <script async defer src="http://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAKkpGgQdS2nqqTCmAPkN3P21RjlGVzm5k&callback=initMap"></script>
   <script src="js/lib/jquery-3.2.1.min.js"></script>
+  <script src="js/lib/jquery-3.1.1.js"></script>
   <script src="js/lib/knockout-3.2.0.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/jquery.js"></script>
   </body>
 </html>

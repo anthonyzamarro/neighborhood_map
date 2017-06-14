@@ -52,6 +52,13 @@ function getData(restaurants) {
          this.address  = restaurantData.address;
          this.contact  = restaurantData.contact;
          this.url  = restaurantData.url;
+
+         //Style the markers a bit. This will be our listing marker icon.
+         var defaultIcon = makeMarkerIcon('0091ff');
+
+         // //Create a "highlighted location" marker color for when the user mouses over the marker
+         var highlightedIcon = makeMarkerIcon('FFFF24');
+
           //Create markers and infowindows for each location
            marker = new google.maps.Marker({
              position: this.position,
@@ -60,10 +67,27 @@ function getData(restaurants) {
              animation: google.maps.Animation.DROP,
              address: this.address,
              contact: this.contact,
-             url: this.url
+             url: this.url,
+             icon: defaultIcon,
            });
              //Attach markers to restaurant objects
             restaurantData.marker = marker
+
+            marker.addListener('click', function(){
+              var marker = this;
+                  toggleBounce(marker)
+                  setTimeout(function(){
+                    marker.setAnimation(null)
+                  }, 2000);
+            });
+            //Marker bounces on click
+            function toggleBounce(marker) {
+            if (marker.getAnimation() !== null) {
+              marker.setAnimation(null);
+            } else {
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+           }
              //Click on marker to open infowindow
              marker.addListener('click', function(){
              populateInfoWindow(this, infowindow);
@@ -110,6 +134,27 @@ function getData(restaurants) {
             };
             restaurantData.infowindow = populateInfoWindow
             bounds.extend(marker.position);
+
+            //Change colors of the marker with mouseove
+            marker.addListener('mouseover', function(){
+              this.setIcon(highlightedIcon);
+            });
+            //Change back to original color with mouseout
+            marker.addListener('mouseout', function(){
+              this.setIcon(defaultIcon);
+            });
+
+            //Give markers unique color scheme
+            function makeMarkerIcon(markerColor) {
+              var markerImage = new google.maps.MarkerImage(
+                'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor +
+                '|40|_|%E2%80%A2',
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(10, 34),
+                new google.maps.Size(21, 34));
+                return markerImage;
+            }
        });
      },
      error: function() {
@@ -125,8 +170,7 @@ function getData(restaurants) {
     this.searchRestaurants = document.getElementById('search-box');
     this.searchRestaurants = ko.observable('');
     this.title = document.getElementById('title');
-    this.title = ko.observable('Restaurants in Boston');
-
+    this.title = ko.observable('eat boston');
 
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function (infowindowData) {
@@ -139,7 +183,9 @@ function getData(restaurants) {
             var filter = self.searchRestaurants().toLowerCase();
             if(!filter) {
               for (var i = 0; i < self.restaurants().length; i++) {
-                console.log(self.restaurants()[i].marker);
+                if(self.restaurants()[i].marker) {
+                  self.restaurants()[i].marker.setVisible(true)
+                }
               }
               return self.restaurants();
             } else {
@@ -150,11 +196,6 @@ function getData(restaurants) {
               });
             }
         }, self.filteredList);
-
-        this.searchBtn = function () {
-
-        }
         getData(this.restaurants)
       }
-
 }

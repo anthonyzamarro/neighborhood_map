@@ -1,24 +1,46 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
-body {
+body,
+#map {
   font-family: Arial, sans-serif;
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
-}
-
-.container {
-  height: 100%;
-  position: relative;
-}
-
-#map {
-  height: 100%;
-  width: 100%;
   position: absolute;
+}
+
+#title {
+  text-transform: uppercase;
+}
+
+#side-view {
+  position: absolute;
+  background: lightblue;
+  opacity: .7;
+  border: 1px solid black;
+  height: 70%
+}
+
+#side-view-btn {
+  position: absolute;
+  z-index: 10;
+  background-color: lightgreen;
+  width: 100px;
+  width: 150px;
 }
 
 #search-box {
   background: lightgray;
+}
+
+.restaurantList {
+  overflow: scroll;
+  width: 100%;
+  height: 70%
 }
 
 li {
