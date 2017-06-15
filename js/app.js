@@ -171,6 +171,7 @@ function getData(restaurants) {
     this.searchRestaurants = ko.observable('');
     this.title = document.getElementById('title');
     this.title = ko.observable('eat boston');
+    this.attribution = ko.observable('data by Foursquare');
 
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function (infowindowData) {

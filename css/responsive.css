@@ -1,9 +1,14 @@
-@media screen  and (min-width: 100px) and (max-width: 600px) {
+@media screen  and (min-width: 100px) and (max-width: 532px) {
         #title {
           font-size: 1.6em;
+          width: 50%;
+          left: 10px;
         }
-        #search-area {
-          margin-left: 20px;
+        #attribution {
+          width: 50%;
+          top: 48px;
+          left: 10px;
+          font-size: 14px;
         }
         #side-view {
           width: 50%;
@@ -11,10 +16,236 @@
         li {
           width: 100%;
         }
+        .restaurantList {
+          top: 75px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 20%;
+          left: 20px;
+        }
+        #search-box {
+          left: 120px;
+          top: 20px;
+        }
 }
-@media screen and (min-width: 601px) and (max-width: 1200px) {
+@media screen and (min-width: 533px) {
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #attribution {
+          width: 50%;
+          top: 48px;
+          left: 28px;
+          font-size: 14px;
+        }
         #side-view {
-          height: 70%;
-          overflow: hidden;
+          width: 50%;
+        }
+        li {
+          width: 100%;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 20%;
+          left: 20px;
+        }
+        #search-box {
+          left: 150px;
+          top: 20px;
+        }
+}
+@media screen and (min-width: 600px) {
+        #search-box {
+          left: 160px;
+          top: 20px;
+        }
+}
+@media screen and (min-width: 640px) {
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 20%;
+          left: 20px;
+        }
+        #search-box {
+          left: 190px;
+          top: 20px;
+        }
+}
+@media screen and (min-width: 768px) and (max-width: 799px) {
+        #search-box {
+          left: 210px;
+        }
+
+}
+@media screen and (min-width: 800px){
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 20%;
+          left: 20px;
+        }
+        #search-box {
+          left: 210px;
+          top: 20px;
+        }
+}
+@media screen and (min-width: 960px){
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 20%;
+          left: 20px;
+        }
+        #search-box {
+          left: 290px;
+          top: 20px;
+        }
+}
+@media screen and (min-width: 1000px) {
+        #search-box {
+          left: 160px;
+          top: 20px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 10%;
+          left: 20px;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+}
+@media screen and (min-width: 1200px) and (max-width: 1599px) {
+        #search-box {
+          left: 190px;
+          top: 20px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 7%;
+          left: 40px;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #title {
+          font-size: 1.6em;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+}
+
+/*Kindle Fire Portrait*/
+@media screen and (min-width: 1600px) {
+        #search-box {
+          left: 210px;
+          top: 20px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 10%;
+          left: 20px;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
+        }
+}
+/*Kindle Fire Landscape*/
+@media screen and (min-width: 2560px) {
+        #search-box {
+          left: 300px;
+          top: 20px;
+        }
+        #side-view-btn {
+          top: 20px;
+          width: 10%;
+          left: 20px;
+        }
+        .restaurantList {
+          top: 75px;
+        }
+        #title {
+          font-size: 1.6em;
+          width: 50%;
+          left: 10px;
+        }
+        #side-view {
+          width: 30%;
+        }
+        li {
+          width: 100%;
         }
 }

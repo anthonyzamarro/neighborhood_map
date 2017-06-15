@@ -8,13 +8,15 @@
     <title>Neighborhood Map</title>
   </head>
   <body>
-      <div id="map"></div>
+    <div id="top-view">
       <input type="button" value="MENU" id="side-view-btn">
+       <input id="search-box" type="text" value="Search..." data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
+       <h3 id="attribution" data-bind="text: attribution"></h3>
+
+    </div>
+      <div id="map"></div>
       <div id="side-view">
         <h2 id="title" data-bind="text: title"></h2>
-        <div id="search-area">
-          <input id="search-box" type="text" value="Search..." data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
-        </div>
         <ul data-bind="foreach: filteredList" class="restaurantList">
           <li id="list-item" data-bind="text: $data.name, click: $parent.restaurantClick"></li>
         </ul>
