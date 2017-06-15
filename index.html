@@ -10,9 +10,8 @@
   <body>
     <div id="top-view">
       <input type="button" value="MENU" id="side-view-btn">
-       <input id="search-box" type="text" value="Search..." data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
+       <input id="search-box" type="text" data-bind="textInput: searchRestaurants, valueUpdate: 'afterkeydown'">
        <h3 id="attribution" data-bind="text: attribution"></h3>
-
     </div>
       <div id="map"></div>
       <div id="side-view">
@@ -24,8 +23,8 @@
   </div>
   <script async defer src="http://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAKkpGgQdS2nqqTCmAPkN3P21RjlGVzm5k&callback=initMap"></script>
   <script src="js/lib/jquery-3.2.1.min.js"></script>
-  <script src="js/lib/knockout-3.2.0.js"></script>
   <script src="js/jquery.js"></script>
+  <script src="js/lib/knockout-3.2.0.js"></script>
   <script src="js/app.js"></script>
   </body>
 </html>
