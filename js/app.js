@@ -1,5 +1,5 @@
 //Use Foursquare API to get restaurant data to populate model
-var url = 'https://api.foursquare.com/v2/venues/search'
+var url = 'https://api.foursquare.com/v2/venues/search';
 var response, vm, map, marker;
 //Constructor function to format Restaurant info
 var Restaurant = function (data) {
@@ -11,7 +11,7 @@ var Restaurant = function (data) {
   this.url = data.url;
 
   this.position = {lat: data.location.lat, lng: data.location.lng};
-}
+};
 
 //Create map and use Foursquare data to get locations and restaurant details
 function initMap() {
@@ -71,13 +71,13 @@ function getData(restaurants) {
              icon: defaultIcon,
            });
              //Attach markers to restaurant objects
-            restaurantData.marker = marker
+            restaurantData.marker = marker;
 
             marker.addListener('click', function(){
               var marker = this;
-                  toggleBounce(marker)
+                  toggleBounce(marker);
                   setTimeout(function(){
-                    marker.setAnimation(null)
+                    marker.setAnimation(null);
                   }, 2000);
             });
             //Marker bounces on click
@@ -107,7 +107,7 @@ function getData(restaurants) {
                                  '<div class="windowStyles"><a target="_blank" href="' + mapMarker.url + '">' +
                                  'Visit their website' + '</div>';
               var radius = 50;
-               function getStreetView(data, status) {
+               var getStreetView = function (data, status) {
                 if(status == google.maps.StreetViewStatus.OK) {
                 var nearStreetViewLocation = data.location.latLng;
                  var heading = google.maps.geometry.spherical.computeHeading(
@@ -126,13 +126,13 @@ function getData(restaurants) {
                           infowindow.setContent('div' + restaurantData.name + '</div>' +
                           '<div>No Street View Found</div>');
                         }
-                      }
+                      };
                       streetViewService.getPanoramaByLocation(mapMarker.position, radius, getStreetView);
                       //Open the infowindow on the correct marker
                       infowindow.open(map, mapMarker);
               }
             };
-            restaurantData.infowindow = populateInfoWindow
+            restaurantData.infowindow = populateInfoWindow;
             bounds.extend(marker.position);
 
             //Change colors of the marker with mouseove
@@ -185,7 +185,7 @@ function getData(restaurants) {
             if(!filter) {
               for (var i = 0; i < self.restaurants().length; i++) {
                 if(self.restaurants()[i].marker) {
-                  self.restaurants()[i].marker.setVisible(true)
+                  self.restaurants()[i].marker.setVisible(true);
                 }
               }
               return self.restaurants();
@@ -197,6 +197,6 @@ function getData(restaurants) {
               });
             }
         }, self.filteredList);
-        getData(this.restaurants)
+        getData(this.restaurants);
       }
 }
