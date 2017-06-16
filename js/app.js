@@ -180,7 +180,7 @@ function initMap() {
         this.searchRestaurants = ko.observable('');
         this.title = ko.observable('eat boston');
         this.attribution = ko.observable('Data by Foursquare API');
-        this.visibleNav = ko.observable(false)
+        this.visibleNav = ko.observable(false);
 
         //Show infowindow when user clicks restaurant in list view
         this.restaurantClick = function(infowindowData) {
@@ -190,7 +190,7 @@ function initMap() {
 
         this.toggleNav = function() {
               self.visibleNav(!self.visibleNav());
-        }
+        };
         //Filter view list and markers
         self.filteredList = ko.computed(function() {
             var filter = self.searchRestaurants().toLowerCase();
