@@ -5,7 +5,7 @@
 
 ## Running the App
   - Clone the file to your computer
-  - Open the file in your browser of choice
+  - Open the index.html file in your browser of choice
 
 ## References
   This app was created with help and inspiration by:

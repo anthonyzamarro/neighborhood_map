@@ -5,7 +5,7 @@
 html,
 body,
 #map {
-  font-family: Arial, sans-serif;
+  font-family: arial, sans-serif;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -34,25 +34,13 @@ body,
   color: #ffffcc;
 }
 
-#side-view {
+#nav {
   position: absolute;
   background: #003366;
   opacity: .9;
   border: 1px solid black;
   height: 80%;
   top: 90px;
-}
-
-#side-view-btn {
-  z-index: 10;
-  background-color: lightgreen;
-  position: absolute;
-  height: 40px;
-  border-radius: 40%;
-  cursor: pointer;
-}
-#side-view-btn:focus {
-  outline: none;
 }
 
 #search-box {
@@ -62,7 +50,7 @@ body,
   position: absolute;
 }
 
-.restaurantList {
+.restaurant-list {
   overflow: scroll;
   width: 100%;
   height: 70%;
@@ -82,9 +70,18 @@ li {
 }
 
 #pano {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 120px;
   margin: 0 auto;
+}
+
+.toggle-btn {
+  width: 35px;
+  height: 5px;
+  background-color: lightgreen;
+  margin: 6px 0;
+  position: relative;
+  cursor: pointer;
 }
 
 #windowName{

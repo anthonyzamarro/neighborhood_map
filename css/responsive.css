@@ -10,7 +10,7 @@
           left: 10px;
           font-size: 14px;
         }
-        #side-view {
+        #nav {
           width: 50%;
         }
         li {
@@ -19,10 +19,9 @@
         .restaurantList {
           top: 75px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 20%;
-          left: 20px;
+        .toggle-btn {
+          left: 30px;
+          top: 10px;
         }
         #search-box {
           left: 120px;
@@ -41,7 +40,7 @@
           left: 28px;
           font-size: 14px;
         }
-        #side-view {
+        #nav {
           width: 50%;
         }
         li {
@@ -50,10 +49,9 @@
         .restaurantList {
           top: 75px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 20%;
-          left: 20px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         #search-box {
           left: 150px;
@@ -72,19 +70,18 @@
           width: 50%;
           left: 10px;
         }
-        #side-view {
+        #nav {
           width: 30%;
         }
         li {
           width: 100%;
         }
-        .restaurantList {
-          top: 75px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 20%;
-          left: 20px;
+        .restaurant-list {
+          top: 75px;
         }
         #search-box {
           left: 190px;
@@ -109,13 +106,12 @@
         li {
           width: 100%;
         }
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
+        }
         .restaurantList {
           top: 75px;
-        }
-        #side-view-btn {
-          top: 20px;
-          width: 20%;
-          left: 20px;
         }
         #search-box {
           left: 210px;
@@ -137,10 +133,9 @@
         .restaurantList {
           top: 75px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 20%;
-          left: 20px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         #search-box {
           left: 290px;
@@ -152,10 +147,9 @@
           left: 160px;
           top: 20px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 10%;
-          left: 20px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         .restaurantList {
           top: 75px;
@@ -177,10 +171,9 @@
           left: 190px;
           top: 20px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 7%;
-          left: 40px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         .restaurantList {
           top: 75px;
@@ -203,10 +196,9 @@
           left: 210px;
           top: 20px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 10%;
-          left: 20px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         .restaurantList {
           top: 75px;
@@ -229,10 +221,9 @@
           left: 300px;
           top: 20px;
         }
-        #side-view-btn {
-          top: 20px;
-          width: 10%;
-          left: 20px;
+        .toggle-btn {
+          left: 60px;
+          top: 10px;
         }
         .restaurantList {
           top: 75px;
@@ -242,7 +233,7 @@
           width: 50%;
           left: 10px;
         }
-        #side-view {
+        #nav {
           width: 30%;
         }
         li {
